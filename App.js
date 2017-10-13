@@ -4,31 +4,24 @@
  * @flow
  */
 
-
-
 import React, {Component} from 'react';
-import Journey from './component/Journey';
-import { Navigator } from 'react-native-deprecated-custom-components';
 
-export default class App extends Component<{}> {
+import { Dimensions } from 'react-native';
 
-    constructor(props){
-        super(props)
-    }
+const {width , height} = Dimensions.get('window');
+
+import Routers from './component/Routers';
+
+export default class App extends Component {
 
     render() {
-        return (
 
-            <Navigator
-                initialRoute = {{component:Journey}}
-                configureScene={() => Navigator.SceneConfigs.FloatFromRight}
-                renderScene = {(route, navigator) => {
-                    return <route.component navigator={navigator} {...route.args}/>
-                    }
-                }
-            />
+        const { dispatch, nav } = this.props;
+
+        return (
+            <Routers screenProps={{themeColor:'yellow'}}/>
         );
     }
-
 }
+
 
