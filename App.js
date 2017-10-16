@@ -6,10 +6,6 @@
 
 import React, {Component} from 'react';
 
-import { Dimensions } from 'react-native';
-
-const {width , height} = Dimensions.get('window');
-
 import Routers from './component/Routers';
 
 export default class App extends Component {
@@ -20,6 +16,7 @@ export default class App extends Component {
 
         return (
             <Routers screenProps={{themeColor:'yellow'}}/>
+
         );
     }
 }

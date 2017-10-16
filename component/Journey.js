@@ -1,18 +1,33 @@
 'use strict'
 
 import React, {Component} from 'react';
+import ImageSource from '../Resource/images';
+//import Icon from 'react-native-vector-icons/Ionicons'
 
 import {
     StyleSheet,
     Text,
     View,
+    Image,
     SectionList,
-    Dimensions
+    Dimensions,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 
 const dimension = Dimensions.get('window');
 
 export default class Journey extends Component {
+
+    constructor(props) {
+        super(props);
+        this._renderSectionHeader = this._renderSectionHeader.bind(this);
+        this._creatNewJourney = this._creatNewJourney.bind(this);
+    }
+
+    static navigationOptions = {
+        headerTitle: '行程小助手',
+    };
 
     componentDidMount(){
 
@@ -20,98 +35,92 @@ export default class Journey extends Component {
 
     _renderSectionHeader(info) {
 
-        var txt = info.section.weekTxt;
-        var dateTxt = info.section.dateTxt;
+        let txt = info.section.weekTxt;
+        let dateTxt = info.section.dateTxt;
 
         return(
-            <View style={{flexDirection: 'row',height:52}}>
-                <Text key={info.section.key} style={{flex:1,fontSize:20,textAlign:'center',backgroundColor:'#e9f2fe',color:'#3b8afb'}}>{txt}</Text>
-                <Text key={info.section.key} style={{flex:1,fontSize:15,textAlign:'center',backgroundColor:'#e9f2fe',color:'#3b8afb'}}>{dateTxt}</Text>
-                <Text key={info.section.key} style={{flex:2,fontSize:30,textAlign:'center',backgroundColor:'#e9f2fe',color:'#3b8afb'}} onPress={() => this.createNewJouter()}>+</Text>
+            <View style={styles.sectionStyle}>
+                <Text style={styles.sectionTxt1Style}>{txt}</Text>
+                <Text style={styles.sectionTxt2Style}>{dateTxt}</Text>
+                <TouchableOpacity onPress={()=>this._creatNewJourney()} style={styles.newJournalIcon}>
+                    <Image source={ImageSource.addNewJourney}></Image>
+                </TouchableOpacity>
             </View>
         )
-
     }
 
     _renderItem(info) {
 
         return(
-            <View style = {{height:100}}>
-                <Text key={info.item.title}>{info.item.name}</Text>
-                <Text>{info.item.phone}</Text>
+            <View style = {styles.itemStyle}>
+                <View style={{flex:1}}>
+                    <Text style={styles.itemName}>{info.item.name}</Text>
+                </View>
+                <View style={{flex:2,flexDirection:'column'}}>
+                    <Text style={styles.itemLocation}>{info.item.loaction}</Text>
+                    <Text style={styles.itemDetail}>{info.item.detail}</Text>
+                </View>
             </View>
         )
-
     }
 
     _separatorCom() {
         return (
-            <View style={{height: 0.5, width: dimension.width, backgroundColor: '#797979'}}></View>
+            <View style={styles.separatStyle}></View>
         )
+    }
+
+    _creatNewJourney () {
+        // let navigator = this.props.navigator;
+        // if (navigator) {
+        //     navigator.push({
+        //         name:'Test',
+        //         component:Login
+        //     });
+        // }
+        const { navigate } = this.props.navigation;
+        navigate('CreatJourney');
     }
 
     render() {
 
         const sections = [
-                {weekTxt:'今天周一', dateTxt: '9月25日', key: 's1',
+                {weekTxt:'今天周一', dateTxt: '9月25日',
                     data:[
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'}
+                        {name: 'Robert', loaction: '上海、南京',detail:'今天出发，明天返程'},
+                        {name: 'Tony', loaction: '南昌',detail:'今天出发，回城未定'},
+                        {name: 'Hellen', loaction: '天津',detail:'今天出发，周三返程'},
+                        {name: '姚东', loaction: '天津、南京、盐城',detail:'今天出发，回城未定'}
                         ]
                 },
 
-                {weekTxt:'周二', dateTxt: '9月26日', key: 's2',
+                {weekTxt:'周二', dateTxt: '9月26日',
                     data:[
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'}
+                        {name: 'Robert', loaction: '上海、南京',detail:'今天出发，明天返程'},
+                        {name: 'Tony', loaction: '上海、南京',detail:'今天出发，明天返程'},
+                        {name: 'Hellen', loaction: '上海、南京',detail:'今天出发，明天返程'},
+                        {name: '姚东', loaction: '上海、南京',detail:'今天出发，明天返程'}
                     ]
                 },
 
-                {weekTxt:'周三', dateTxt: '9月27日', key: 's3',
+                {weekTxt:'周三', dateTxt: '9月27日',
                     data:[
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'},
-                        {name: '用户', phone: '01234567890'}
+                        {name: 'Hellen', loaction: '天津',detail:'今天出发，明天返程'},
+                        {name: 'Hellen', loaction: '天津',detail:'今天出发，明天返程'},
+                        {name: 'Hellen', loaction: '天津',detail:'今天出发，明天返程'},
+                        {name: 'Hellen', loaction: '天津',detail:'今天出发，明天返程'}
                     ]
                 },
 
-                {weekTxt:'周四', dateTxt: '9月28日', key: 's4',
+                {weekTxt:'周四', dateTxt: '9月28日',
                     data:[
-                         {name: '用户', phone: '01234567890'},
-                         {name: '用户', phone: '01234567890'},
-                         {name: '用户', phone: '01234567890'},
-                         {name: '用户', phone: '01234567890'}
+                         {name: 'Tony', loaction: '南京、盐城',detail:'今天出发，明天返程'},
+                         {name: 'Tony', loaction: '南京、盐城',detail:'今天出发，明天返程'},
+                         {name: 'Tony', loaction: '南京、盐城',detail:'今天出发，明天返程'},
+                         {name: 'Tony', loaction: '南京、盐城',detail:'今天出发，明天返程'}
                     ]
                 },
         ]
-
-
-
-
-
-
-
-
-
-        // for (let i=0;i<7;i++){
-        //     let datas = [];
-        //     for(let j=0;j<7;j++){
-        //         datas.push(
-        //             {
-        //                 name:'用户'+ i + j,
-        //                 phone:'01234567890'
-        //             }
-        //         );
-        //     }
-        //
-        //     sections.push({key:i,data:datas});
-        //
-        // }
 
         return (
 
@@ -148,26 +157,63 @@ export default class Journey extends Component {
             </View>
         );
     }
-
-    createNewJouter = () => {
-
-    }
-
 }
 
-    const styles = StyleSheet.create({
+const styles = StyleSheet.create({
         container: {
-        flex: 1,
-        marginTop: 0,
-    },
-        welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-        instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-    });
+            flex: 1,
+            marginTop: 0,
+        },
+        sectionStyle: {
+            flex:1,
+            flexDirection:'row',
+            height:50,
+            alignItems:'center',
+            backgroundColor:'#e9f2fe',
+        },
+        itemStyle:{
+            flex:1,
+            flexDirection:'row',
+            height:100,
+            alignItems:'center',
+            backgroundColor:'#fff',
+        },
+        separatStyle:{
+            height: 0.5,
+            width: dimension.width,
+            backgroundColor: '#dddddd',
+        },
+        //sectionHeader
+        sectionTxt1Style: {
+            fontSize:20,
+            marginLeft:15,
+            color:'#3b8afb',
+        },
+        sectionTxt2Style: {
+            flex:1,
+            fontSize:15,
+            marginLeft:15,
+            color:'#3b8afb',
+        },
+        newJournalIcon:{
+            alignItems:'flex-end',
+            marginRight:15,
+        },
+        //Item
+        itemName:{
+            fontSize:20,
+            marginLeft:15,
+            color:'#333333',
+        },
+        itemLocation:{
+            flex:1,
+            fontSize:20,
+            marginTop:20,
+            color:'#333333',
+        },
+        itemDetail:{
+            flex:1,
+            fontSize:16,
+            color:'#999999',
+        },
+});
